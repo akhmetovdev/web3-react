@@ -1,10 +1,13 @@
 import { ConnectorUpdate } from '@web3-react/types'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 import Web3ProviderEngine from 'web3-provider-engine'
-import { ledgerEthereumBrowserClientFactoryAsync } from '@0x/subproviders/lib/src' // https://github.com/0xProject/0x-monorepo/issues/1400
 import { LedgerSubprovider } from '@0x/subproviders/lib/src/subproviders/ledger' // https://github.com/0xProject/0x-monorepo/issues/1400
 import CacheSubprovider from 'web3-provider-engine/subproviders/cache.js'
 import { RPCSubprovider } from '@0x/subproviders/lib/src/subproviders/rpc_subprovider' // https://github.com/0xProject/0x-monorepo/issues/1400
+import Eth from '@ledgerhq/hw-app-eth';
+import TransportU2F from '@ledgerhq/hw-transport-u2f';
+// @ts-ignore
+import TransportWebUsb from '@ledgerhq/hw-transport-webusb'
 
 interface LedgerConnectorArguments {
   chainId: number
@@ -43,13 +46,19 @@ export class LedgerConnector extends AbstractConnector {
     this.baseDerivationPath = baseDerivationPath
   }
 
+  public async ledgerEthereumBrowserClientFactoryAsync() {
+    const isWebUsbSupported = await TransportWebUsb.isSupported()
+    const ledgerConnection = isWebUsbSupported ? await TransportWebUsb.create() : await TransportU2F.create()
+    return new Eth(ledgerConnection)
+  }
+
   public async activate(): Promise<ConnectorUpdate> {
     if (!this.provider) {
       const engine = new Web3ProviderEngine({ pollingInterval: this.pollingInterval })
       engine.addProvider(
         new LedgerSubprovider({
           networkId: this.chainId,
-          ledgerEthereumClientFactoryAsync: ledgerEthereumBrowserClientFactoryAsync,
+          ledgerEthereumClientFactoryAsync: this.ledgerEthereumBrowserClientFactoryAsync,
           accountFetchingConfigs: this.accountFetchingConfigs,
           baseDerivationPath: this.baseDerivationPath
         })
