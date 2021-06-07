@@ -3,7 +3,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "6.1.93",
+  "version": "6.1.94",
   "description": "A simple, maximally extensible, dependency minimized framework for building modern Ethereum dApps",
   "keywords": [
     "react",
@@ -36,7 +36,7 @@
   },
   "dependencies": {
     "@0x/subproviders": "^6.5.3",
-    "@akhmetovdev/ledger-connector": "^1.0.14",
+    "@akhmetovdev/ledger-connector": "^1.0.15",
     "@web3-react/abstract-connector": "^6.0.7",
     "@web3-react/types": "^6.0.7"
   },
