@@ -1,4 +1,3 @@
-import { makeEthApp } from "@akhmetovdev/ledger-connector";
 import { ConnectorUpdate } from '@web3-react/types'
 import { AbstractConnector } from '@web3-react/abstract-connector'
 import Web3ProviderEngine from 'web3-provider-engine'
@@ -12,7 +11,8 @@ interface LedgerConnectorArguments {
   pollingInterval?: number
   requestTimeoutMs?: number
   accountFetchingConfigs?: any
-  baseDerivationPath?: string
+  baseDerivationPath?: string,
+  ledgerEthereumBrowserClientFactoryAsync: () => Promise<any>
 }
 
 export class LedgerConnector extends AbstractConnector {
@@ -22,6 +22,7 @@ export class LedgerConnector extends AbstractConnector {
   private readonly requestTimeoutMs?: number
   private readonly accountFetchingConfigs?: any
   private readonly baseDerivationPath?: string
+  private readonly ledgerEthereumBrowserClientFactoryAsync: () => Promise<any>
 
   private provider: any
 
@@ -31,7 +32,8 @@ export class LedgerConnector extends AbstractConnector {
     pollingInterval,
     requestTimeoutMs,
     accountFetchingConfigs,
-    baseDerivationPath
+    baseDerivationPath,
+    ledgerEthereumBrowserClientFactoryAsync
   }: LedgerConnectorArguments) {
     super({ supportedChainIds: [chainId] })
 
@@ -41,10 +43,7 @@ export class LedgerConnector extends AbstractConnector {
     this.requestTimeoutMs = requestTimeoutMs
     this.accountFetchingConfigs = accountFetchingConfigs
     this.baseDerivationPath = baseDerivationPath
-  }
-
-  public async ledgerEthereumBrowserClientFactoryAsync() {
-    return await makeEthApp() as any;
+    this.ledgerEthereumBrowserClientFactoryAsync = ledgerEthereumBrowserClientFactoryAsync
   }
 
   public async activate(): Promise<ConnectorUpdate> {
