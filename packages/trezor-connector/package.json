@@ -1,5 +1,5 @@
 {
-  "name": "@akhmetovdev/trezor-connector",
+  "name": "@akhmetovdev/web3-react-trezor-connector",
   "publishConfig": {
     "access": "public"
   },
