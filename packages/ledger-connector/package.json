@@ -1,5 +1,5 @@
 {
-  "name": "@akhmetovdev/ledger-connector",
+  "name": "@akhmetovdev/web3-react-ledger-connector",
   "publishConfig": {
     "access": "public"
   },
