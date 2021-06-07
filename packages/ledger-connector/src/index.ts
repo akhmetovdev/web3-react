@@ -4,14 +4,11 @@ import Web3ProviderEngine from 'web3-provider-engine'
 import { LedgerSubprovider } from '@0x/subproviders/lib/src/subproviders/ledger' // https://github.com/0xProject/0x-monorepo/issues/1400
 import CacheSubprovider from 'web3-provider-engine/subproviders/cache.js'
 import { RPCSubprovider } from '@0x/subproviders/lib/src/subproviders/rpc_subprovider' // https://github.com/0xProject/0x-monorepo/issues/1400
-import Eth from '@ledgerhq/hw-app-eth';
-import TransportU2F from '@ledgerhq/hw-transport-u2f';
-// @ts-ignore
-import TransportWebUsb from '@ledgerhq/hw-transport-webusb'
 
 interface LedgerConnectorArguments {
   chainId: number
   url: string
+  ledgerEthereumBrowserClientFactoryAsync: () => Promise<any>
   pollingInterval?: number
   requestTimeoutMs?: number
   accountFetchingConfigs?: any
@@ -21,6 +18,7 @@ interface LedgerConnectorArguments {
 export class LedgerConnector extends AbstractConnector {
   private readonly chainId: number
   private readonly url: string
+  private readonly ledgerEthereumBrowserClientFactoryAsync: () => Promise<any>
   private readonly pollingInterval?: number
   private readonly requestTimeoutMs?: number
   private readonly accountFetchingConfigs?: any
@@ -31,6 +29,7 @@ export class LedgerConnector extends AbstractConnector {
   constructor({
     chainId,
     url,
+    ledgerEthereumBrowserClientFactoryAsync,
     pollingInterval,
     requestTimeoutMs,
     accountFetchingConfigs,
@@ -44,12 +43,7 @@ export class LedgerConnector extends AbstractConnector {
     this.requestTimeoutMs = requestTimeoutMs
     this.accountFetchingConfigs = accountFetchingConfigs
     this.baseDerivationPath = baseDerivationPath
-  }
-
-  public async ledgerEthereumBrowserClientFactoryAsync() {
-    const isWebUsbSupported = await TransportWebUsb.isSupported()
-    const ledgerConnection = isWebUsbSupported ? await TransportWebUsb.create() : await TransportU2F.create()
-    return new Eth(ledgerConnection)
+    this.ledgerEthereumBrowserClientFactoryAsync = ledgerEthereumBrowserClientFactoryAsync
   }
 
   public async activate(): Promise<ConnectorUpdate> {
