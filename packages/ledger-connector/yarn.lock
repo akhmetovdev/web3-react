@@ -110,10 +110,10 @@
     ethers "~4.0.4"
     lodash "^4.17.11"
 
-"@akhmetovdev/ledger-connector@^1.0.16":
-  version "1.0.16"
-  resolved "https://registry.yarnpkg.com/@akhmetovdev/ledger-connector/-/ledger-connector-1.0.16.tgz#07d68151ae7970e7ce7b0166d6629725531715d4"
-  integrity sha512-P+W8eigs5OrT6cS1GW37ZlcyO2rToNdD2dEExT59DIamX0vsDU67ZHbmL/xXcfwdU/RkBqBUcKyQOPJbsWKqgQ==
+"@akhmetovdev/ledger-connector@^1.0.17":
+  version "1.0.17"
+  resolved "https://registry.yarnpkg.com/@akhmetovdev/ledger-connector/-/ledger-connector-1.0.17.tgz#b7a8e533ef184dd1bdc33d544ef698845afab862"
+  integrity sha512-sve3rilusLFuc5jNxtBwmc0Qgn+7lyOi+rt23v66/Y7QXwY3j9qiNgeVhUSj5XOIEGDd0r1qOYdNnndgBVCChQ==
   dependencies:
     "@ledgerhq/hw-app-btc" "^5.51.1"
     "@ledgerhq/hw-app-eth" "^5.53.0"
