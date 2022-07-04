@@ -138,7 +138,7 @@ export function useWeb3ReactManager(): Web3ReactManagerReturn {
 
         const augmentedUpdate = await augmentConnectorUpdate(connector, update)
 
-        if (updateBusterRef.current > updateBusterInitial) {
+        if (updateBusterRef.current > updateBusterInitial && (connector as any).walletConnectProvider == null) {
           throw new StaleConnectorError()
         }
         dispatch({ type: ActionType.ACTIVATE_CONNECTOR, payload: { connector, ...augmentedUpdate, onError } })
@@ -151,7 +151,7 @@ export function useWeb3ReactManager(): Web3ReactManagerReturn {
           throw error
         } else if (onError) {
           activated && connector.deactivate()
-          onError(error)
+          onError(error as Error)
         } else {
           // we don't call activated && connector.deactivate() here because it'll be handled in the useEffect
           dispatch({ type: ActionType.ERROR_FROM_ACTIVATION, payload: { connector, error } })
@@ -200,7 +200,7 @@ export function useWeb3ReactManager(): Web3ReactManagerReturn {
             warning(false, `Suppressed stale connector update from error state ${connector} ${update}`)
           } else {
             // though we don't have to, we're re-circulating the new error
-            onError ? onError(error) : dispatch({ type: ActionType.ERROR, payload: { error } })
+            onError ? onError(error as Error) : dispatch({ type: ActionType.ERROR, payload: { error } })
           }
         }
       }
