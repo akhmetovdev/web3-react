@@ -1,16 +1,16 @@
-import { InjectedConnector } from '@web3-react/injected-connector'
-import { NetworkConnector } from '@web3-react/network-connector'
-import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
-import { WalletLinkConnector } from '@web3-react/walletlink-connector'
-import { LedgerConnector } from '@web3-react/ledger-connector'
-import { TrezorConnector } from '@web3-react/trezor-connector'
-import { LatticeConnector } from '@web3-react/lattice-connector'
-import { FrameConnector } from '@web3-react/frame-connector'
 import { AuthereumConnector } from '@web3-react/authereum-connector'
 import { FortmaticConnector } from '@web3-react/fortmatic-connector'
+import { FrameConnector } from '@web3-react/frame-connector'
+import { InjectedConnector } from '@web3-react/injected-connector'
+import { LatticeConnector } from '@web3-react/lattice-connector'
+import { LedgerConnector } from '@web3-react/ledger-connector'
 import { MagicConnector } from '@web3-react/magic-connector'
+import { NetworkConnector } from '@web3-react/network-connector'
 import { PortisConnector } from '@web3-react/portis-connector'
 import { TorusConnector } from '@web3-react/torus-connector'
+import { TrezorConnector } from '@web3-react/trezor-connector'
+import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
+import { WalletLinkConnector } from '@web3-react/walletlink-connector'
 
 const POLLING_INTERVAL = 12000
 const RPC_URLS: { [chainId: number]: string } = {
@@ -26,14 +26,16 @@ export const network = new NetworkConnector({
 })
 
 export const walletconnect = new WalletConnectConnector({
-  rpc: { 1: RPC_URLS[1], 4: RPC_URLS[4] },
-  qrcode: true,
-  pollingInterval: POLLING_INTERVAL
+  rpc: RPC_URLS,
+  chainId: 1,
+  bridge: 'https://bridge.walletconnect.org',
+  qrcode: true
 })
 
 export const walletlink = new WalletLinkConnector({
   url: RPC_URLS[1],
-  appName: 'web3-react example'
+  appName: 'web3-react example',
+  supportedChainIds: [1, 3, 4, 5, 42, 10, 137, 69, 420, 80001]
 })
 
 export const ledger = new LedgerConnector({ chainId: 1, url: RPC_URLS[1], pollingInterval: POLLING_INTERVAL })
